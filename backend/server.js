@@ -28,7 +28,6 @@ app.get("*", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const path = require("path");
 
 // Serve static files from build directory
 app.use(express.static(path.join(__dirname, "build")));
