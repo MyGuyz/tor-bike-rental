@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ต่อรถเช่า | จองมอเตอร์ไซค์ออนไลน์</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input, select { width: 100%; padding: 8px; }
+    button { margin-top: 1rem; padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1 id="title">จองมอเตอร์ไซค์</h1>
+  <button onclick="toggleLang()">EN / TH</button>
+  <form id="bookingForm">
+    <label id="label-name">ชื่อ</label>
+    <input type="text" name="name" required />
+    <label id="label-phone">เบอร์โทร</label>
+    <input type="text" name="phone" required />
+    <label id="label-moto">เลือกรถ</label>
+    <select name="motorcycle">
+      <option value="Honda Click 125i">Honda Click 125i</option>
+      <option value="Yamaha NMax">Yamaha NMax</option>
+    </select>
+    <label id="label-pick">วันรับรถ</label>
+    <input type="date" name="pickupDate" required />
+    <label id="label-return">วันคืนรถ</label>
+    <input type="date" name="returnDate" required />
+    <button type="submit">ยืนยันการจอง</button>
+  </form>
+  <p id="result"></p>
+
+  <script src="i18n.js"></script>
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      const res = await fetch("https://your-backend-url.onrender.com/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      document.getElementById("result").textContent = result.message + ' | รหัสจอง: ' + result.code;
+    });
+  </script>
+</body>
+</html>
